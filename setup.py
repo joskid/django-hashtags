@@ -23,7 +23,7 @@ setup(
                         'Web Framework to help you publish content with '
                         'hashtags (like twitter hashtags), in documents, or '
                         'comments, or wherever.'),
-    keywords = 'django apps tools hashtag tagging',
+    keywords = 'django apps hashtag tagging',
     author = 'Guilherme Gondim',
     author_email = 'semente@taurinus.org',
     url = 'http://github.com/semente/django-hashtags',
