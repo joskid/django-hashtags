@@ -10,15 +10,15 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, HttpResponse
 from django.template import loader, RequestContext
 from django.views.generic import list_detail
-from hashtag.models import Hashtag, HashtaggedItem
+from hashtags.models import Hashtag, HashtaggedItem
 
 def hashtagged_item_list(request, hashtag, template_loader=loader,
-                         template_name="hashtags/hashtagged_item_list",
+                         template_name="hashtags/hashtagged_item_list.html",
                          extra_context={}, context_processors=None,
                          template_object_name='hashtagged_item_list',
                          mimetype=None):
     try:
-        hashtag = Hashtag.object.get(name=hashtag)
+        hashtag = Hashtag.objects.get(name=hashtag)
     except ObjectDoesNotExist:
         raise Http404("Hashtag %s doesn't exist." % hashtag)
     t = template_loader.get_template(template_name)
