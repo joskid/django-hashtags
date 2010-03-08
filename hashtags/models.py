@@ -43,4 +43,4 @@ class HashtaggedItem(models.Model):
         verbose_name_plural = _('hashtagged items')
 
     def __unicode__(self):
-        return u'%s [%s]' % (self.object, self.hashtag)
+        return u'%s [%s]' % (self.content_object, self.hashtag)
