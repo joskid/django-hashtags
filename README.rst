@@ -36,6 +36,32 @@ pattern in your *URLConf*::
 
   (r'^hashtags/', include('hashtags.urls')),
 
+Template tags
+`````````````
+
+The ``hashtags.templatetags.hashtags_tags`` module defines a number of template
+tags which may be used to work with hashtags.
+
+To access Hashtags template tags in a template, use the {% load %}
+tag::
+
+    {% load hashtags_tags %}
+
+urlize_hashtags
+¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
+
+Converts hashtags in plain text into clickable links.
+
+For example::
+
+    {{ value|urlize_hashtags }}
+
+If value is "This is a #test.", the output will be "This is a
+<a href="[reversed url for hashtagged_item_list(request, hashtag='test')]">#test</a>.".
+
+Note that if ``urlize_hashtags`` is applied to text that already contains HTML
+markup, things won't work as expected. Prefer apply this filter to plain text.
+
 
 Copying conditions
 ==================
