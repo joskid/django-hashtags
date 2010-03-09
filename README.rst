@@ -139,6 +139,21 @@ class attribute, then your ``post_save_handler`` can be::
         hashtagged_model_was_saved.send(sender=sender, instance=instance)
 
 
+Contributing
+============
+
+If you find any problems in the code or documentation, please take 30 seconds
+to fill out a issue `here <http://github.com/semente/django-hashtags/issues>`_.
+
+The contributing with code or translation is MUCH-APPRECIATED. You feel free to
+create forks or send patchs.
+
+See AUTHORS file for a complete authors list of this application.
+
+*Thanks to `Interaction Consortium <http://interactionconsortium.com/>`_ for
+sponsoring the project.*
+
+
 Copying conditions
 ==================
 
