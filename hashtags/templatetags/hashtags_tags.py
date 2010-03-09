@@ -48,6 +48,23 @@ urlize_hashtags.is_safe = True
 urlize_hashtags = stringfilter(urlize_hashtags)
 
 def urlize_and_track_hashtags(value, object_to_track=None):
+    """
+    Works like ``urlize_hashtags`` but you can pass a object parameter to
+    link/relate hashtags on text with the object in question.
+
+    Usage example::
+
+        {{ value|urlize_and_track_hashtags:object_to_track }}
+
+    Real world example::
+
+        {{ flatpage.content|urlize_and_track_hashtags:flatpage }}
+
+    **Important**: ``urlize_and_track_hashtags`` doesn't works property if your
+    object has two fields with hashtags to be tracked. Use the signals below if
+    you want this feature or if you want hashtags updated on ``post_save``
+    signal instead on template rendering.
+    """
     link_hashtags_to_model(value, object_to_track)
     return mark_safe(urlize_hashtags(value))
 urlize_and_track_hashtags.is_safe = True
