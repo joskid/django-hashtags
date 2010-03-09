@@ -25,12 +25,14 @@ def parse_fields_looking_for_hashtags(sender, instance, hashtagged_field_list=No
     hashtag_list = []
     for field in hashtagged_field_list:
         for hname in hashtag_pattern.findall(instance.__getattribute__(field)):
-            hashtag = Hashtag.objects.get_or_create(name=hname)
+            hashtag, created = Hashtag.objects.get_or_create(name=hname)
+            if created:
+                hashtag.save()
             hashtag_list.append(hashtag)
 
     # unlinking instance from old hashtags and purging unused hashtags
     instance_type = ContentType.objects.get_for_model(sender)
-    qs = HashtaggedItem.objects.exclude(hashtag__in=hashtag_list)
+    qs = HashtaggedItem.objects.all().exclude(hashtag__in=hashtag_list)
     qs = qs.filter(content_type=instance_type, object_id=instance.id)
     old_hashtag_list = [item.hashtag for item in qs]
     for hashtag in old_hashtag_list:
