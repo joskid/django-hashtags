@@ -85,7 +85,7 @@ Connecting your models that you want track hashtags (FlatPage example)::
     post_save.connect(post_save_handler, sender=FlatPage)
 
 Alternatively you can set ``hashtagged_field_list`` in your model as a
-class attribute, then your ``post_save_handler`` can be:
+class attribute, then your ``post_save_handler`` can be::
 
     def post_save_handler(sender, instance, **kwargs):
         hashtagged_model_was_saved.send(sender=sender, instance=instance)
