@@ -24,7 +24,7 @@ def parse_fields_looking_for_hashtags(sender, instance, hashtagged_field_list=No
     """
     A function handler to work with ``hashtagged_model_was_saved`` signal. This
     handler parse a list of model fields looking for hashtags to be
-    related/linked with the model in question.
+    linked/related with the instance in question.
 
     Usage example::
 

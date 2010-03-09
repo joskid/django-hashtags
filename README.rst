@@ -37,6 +37,53 @@ pattern in your *URLConf*::
   (r'^hashtags/', include('hashtags.urls')),
 
 
+Template tags
+-------------
+
+The ``hashtags.templatetags.hashtags_tags`` module defines a number of template
+tags which may be used to work with hashtags.
+
+To access Hashtags template tags in a template, use the {% load %}
+tag::
+
+    {% load hashtags_tags %}
+
+urlize_hashtags filter
+``````````````````````
+
+Converts hashtags in plain text into clickable links.
+
+For example::
+
+    {{ value|urlize_hashtags }}
+
+If value is "This is a #test.", the output will be::
+
+    This is a <a href="[reversed url for hashtagged_item_list(request, hashtag='test')]">#test</a>.
+
+Note that if ``urlize_hashtags`` is applied to text that already contains HTML
+markup, things won't work as expected. Prefer apply this filter to plain text.
+
+urlize_and_track_hashtags filter
+````````````````````````````````
+
+Works like ``urlize_hashtags`` but you can pass a object parameter to
+link/relate hashtags on text with the object in question.
+
+Usage example::
+
+    {{ value|urlize_and_track_hashtags:object_to_track }}
+
+Real world example::
+
+    {{ flatpage.content|urlize_and_track_hashtags:flatpage }}
+
+**Important**: ``urlize_and_track_hashtags`` doesn't works property if your
+object has two fields with hashtags to be tracked. Use the signals below if you
+want this feature or if you want hashtags updated on ``post_save`` signal
+instead on template rendering.
+
+
 Signals
 -------
 
@@ -89,34 +136,6 @@ class attribute, then your ``post_save_handler`` can be::
 
     def post_save_handler(sender, instance, **kwargs):
         hashtagged_model_was_saved.send(sender=sender, instance=instance)
-
-
-Template tags
--------------
-
-The ``hashtags.templatetags.hashtags_tags`` module defines a number of template
-tags which may be used to work with hashtags.
-
-To access Hashtags template tags in a template, use the {% load %}
-tag::
-
-    {% load hashtags_tags %}
-
-urlize_hashtags
-```````````````
-
-Converts hashtags in plain text into clickable links.
-
-For example::
-
-    {{ value|urlize_hashtags }}
-
-If value is "This is a #test.", the output will be::
-
-    This is a <a href="[reversed url for hashtagged_item_list(request, hashtag='test')]">#test</a>.
-
-Note that if ``urlize_hashtags`` is applied to text that already contains HTML
-markup, things won't work as expected. Prefer apply this filter to plain text.
 
 
 Copying conditions
