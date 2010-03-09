@@ -1,0 +1,10 @@
+{% extends "base_hashtags.html" %}
+
+<h1>Itens with the hashtag "{{ hashtag }}"</h1>
+
+<ul>
+{% for item in hashtagged_item_list %}
+  <li><a href="{{ item.content_object.get_absolute_url }}">
+      {{ item.content_object }}</a></li>
+{% endfor %}
+</ul>

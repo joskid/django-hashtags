@@ -1,0 +1,9 @@
+{% extends "base_hashtags.html" %}
+
+<h1>Hashtags index</h1>
+
+<ul>
+{% for hashtag in hashtag_list %}
+  <li><a href="{% url hashtagged_item_list hashtag %}">{{ hashtag }}</a></li>
+{% endfor %}
+</ul>

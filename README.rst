@@ -36,6 +36,7 @@ pattern in your *URLConf*::
 
   (r'^hashtags/', include('hashtags.urls')),
 
+*Note: on directory "etc/sample_templates/" you have some template examples.*
 
 Template tags
 -------------
