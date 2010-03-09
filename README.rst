@@ -36,6 +36,61 @@ pattern in your *URLConf*::
 
   (r'^hashtags/', include('hashtags.urls')),
 
+
+Signals
+-------
+
+hashtagged_model_was_saved
+``````````````````````````
+
+A post-save signal hook to you connect function handlers to work with
+hashtagged model fields.
+
+Arguments sent with this signal:
+
+sender
+    The model class.
+instance
+    The actual instance being saved or updated.
+hashtagged_field_list
+    String list of the model fields that has hashtags to be tracked.
+    Default: None
+
+parse_fields_looking_for_hashtags
+`````````````````````````````````
+
+A function handler to work with ``hashtagged_model_was_saved`` signal. This
+function parse a list of model fields looking for hashtags to be related/linked
+with the model in question.
+
+Usage example::
+
+    # You need connect ``parse_fields_looking_for_hashtags`` on
+    # ``hashtagged_model_was_saved`` only one time.
+    from hashtags.signals import (hashtagged_model_was_saved,
+                                  parse_fields_looking_for_hashtags)
+    hashtagged_model_was_saved.connect(parse_fields_looking_for_hashtags)
+
+Connecting your models that you want track hashtags (FlatPage example)::
+
+    from django.contrib.flatpages.models import FlatPage
+    from django.db.models.signals import post_save
+
+    # connect hashtagged_model_was_saved signal to post_save
+    def post_save_handler(sender, instance, **kwargs):
+        hashtagged_model_was_saved.send(sender=sender, instance=instance,
+            # put the hashtagged fields of your app here
+            hashtagged_field_list=['title', 'content']
+        )
+    post_save.connect(post_save_handler, sender=FlatPage)
+
+Alternatively you can set ``hashtagged_field_list`` in your model as a
+class attribute, then your ``post_save_handler`` can be:
+
+    def post_save_handler(sender, instance, **kwargs):
+        hashtagged_model_was_saved.send(sender=sender, instance=instance)
+
+
 Template tags
 -------------
 
