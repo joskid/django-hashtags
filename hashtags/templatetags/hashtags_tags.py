@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright (c) 2010 Guilherme Gondim and contributors
 #
 # This file is part of Django Hashtags.
@@ -20,6 +22,7 @@ tag::
 from django.template import Library
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
+from hashtags.utils import link_hashtags_to_model
 
 register = Library()
 
@@ -44,4 +47,11 @@ def urlize_hashtags(value):
 urlize_hashtags.is_safe = True
 urlize_hashtags = stringfilter(urlize_hashtags)
 
+def urlize_and_track_hashtags(value, object_to_track=None):
+    link_hashtags_to_model(value, object_to_track)
+    return mark_safe(urlize_hashtags(value))
+urlize_and_track_hashtags.is_safe = True
+urlize_and_track_hashtags = stringfilter(urlize_and_track_hashtags)
+
 register.filter(urlize_hashtags)
+register.filter(urlize_and_track_hashtags)

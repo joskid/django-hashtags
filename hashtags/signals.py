@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright (c) 2010 Guilherme Gondim and contributors
 #
 # This file is part of Django Hashtags.
@@ -10,21 +12,19 @@
 Signals relating to hashtags
 """
 
-from django.contrib.contenttypes.models import ContentType
 from django.dispatch import Signal
-from django.db.utils import IntegrityError
-from hashtags.models import Hashtag, HashtaggedItem
-from hashtags.utils import hashtag_pattern
+from hashtags.utils import link_hashtags_to_model
 
 # A post-save signal hook to you connect function handlers to work with
 # hashtagged model fields.
 hashtagged_model_was_saved = Signal(providing_args=['hashtagged_field_list'])
 
-def parse_fields_looking_for_hashtags(sender, instance, hashtagged_field_list=None, **kwargs):
+def parse_fields_looking_for_hashtags(sender, instance, hashtagged_field_list=None,
+                                      **kwargs):
     """
     A function handler to work with ``hashtagged_model_was_saved`` signal. This
-    function parse a list of model fields looking for hashtags to be related/linked
-    with the model in question.
+    handler parse a list of model fields looking for hashtags to be
+    related/linked with the model in question.
 
     Usage example::
 
@@ -59,31 +59,7 @@ def parse_fields_looking_for_hashtags(sender, instance, hashtagged_field_list=No
             hashtagged_field_list = sender.hashtagged_field_list
         except AttributeError:
             return
-
-    # parsing fields looking for hashtags to be linked with the instance
-    hashtag_list = []
+    text = ''
     for field in hashtagged_field_list:
-        for hname in hashtag_pattern.findall(instance.__getattribute__(field)):
-            hashtag, created = Hashtag.objects.get_or_create(name=hname)
-            if created:
-                hashtag.save()
-            hashtag_list.append(hashtag)
-
-    # unlinking instance from old hashtags and purging unused hashtags
-    instance_type = ContentType.objects.get_for_model(sender)
-    qs = HashtaggedItem.objects.all().exclude(hashtag__in=hashtag_list)
-    qs = qs.filter(content_type=instance_type, object_id=instance.id)
-    old_hashtag_list = [item.hashtag for item in qs]
-    for hashtag in old_hashtag_list:
-        if hashtag.hashtaggeditem_set.all().count() == 1:
-            hashtag.delete()
-        else:
-            HashtaggedItem.objects.get(hashtag=hashtag, object_id=instance.id,
-                                       content_type=instance_type).delete()
-
-    # linking instance to the new hashtags
-    for hashtag in hashtag_list:
-        try:
-            HashtaggedItem(content_object=instance, hashtag=hashtag).save()
-        except IntegrityError:
-            continue
+        text += instance.__getattribute__(field) + '\n'
+    link_hashtags_to_model(text, instance)
