@@ -14,8 +14,7 @@ from hashtags.utils import hashtag_pattern
 
 hashtagged_model_was_saved = Signal(providing_args=['hashtagged_field_list'])
 
-def parse_a_field_looking_for_hashtags(sender, instance,
-                                       hashtagged_field_list=None, **kwargs):
+def parse_fields_looking_for_hashtags(sender, instance, hashtagged_field_list=None, **kwargs):
     if not hashtagged_field_list:
         try:
             hashtagged_field_list = sender.hashtagged_field_list
@@ -46,4 +45,4 @@ def parse_a_field_looking_for_hashtags(sender, instance,
         try:
             HashtaggedItem(content_object=instance, hashtag=hashtag).save()
         except IntegrityError:
-            pass
+            continue
