@@ -6,6 +6,9 @@ Django Hashtags
 help you publish content with hashtags (like twitter hashtags), in documents,
 or comments, or wherever.
 
+Project page
+    http://github.com/semente/django-hashtags
+
 .. _`Django Web Framework`: http://www.djangoproject.com
 
 
