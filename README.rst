@@ -48,7 +48,7 @@ You don't need provide the ``queryset`` if you want.
 The ``template_object_name`` by default is ``'hashtag'``. This mean that the
 context variable ``object_list`` will be renamed to ``hashtag_list``.
 
-**Template name**:
+*Template name*:
 
 If ``template_name`` isn't specified, this view will use the template
 ``hashtags/hashtag_index.html`` by default.
@@ -66,11 +66,11 @@ A page representing a list of objects hastagged with ``hashtag``.
 Works like ``django.views.generic.list_detail.object_list`` with the
 peculiarities documented below.
 
-**Required arguments**:
+*Required arguments*:
 
 * ``hashtag``: name of hashtag.
 
-**Optional arguments**:
+*Optional arguments*:
 
 * ``paginate_by``: An integer specifying how many objects should be displayed
   per page. If this is given, the view will paginate objects with paginate_by
@@ -96,13 +96,15 @@ peculiarities documented below.
   view will raise a 404 instead of displaying an empty page. By default, this
   is ``True``.
 
-*Unlike the generic view ``object_list`` you don't provide a ``queryset`` but
-a hashtag name in the URL.*
+*Unlike the generic view object_list you don't provide a queryset but a hashtag
+name in the URL.*
 
-**Template name**:
+*Template name*:
 
 If ``template_name`` isn't specified, this view will use the template
 ``hashtags/hashtagged_item_list.html`` by default.
+
+*Template context*:
 
 In addition to ``extra_context``, the template's context will be:
 
