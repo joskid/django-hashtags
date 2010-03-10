@@ -36,7 +36,95 @@ pattern in your *URLConf*::
 
   (r'^hashtags/', include('hashtags.urls')),
 
+
+Views
+-----
+
+hashtag_index
+`````````````
+A thin wrapper around ``django.views.generic.list_detail.object_list``.
+You don't need provide the ``queryset`` if you want.
+
+The ``template_object_name`` by default is ``'hashtag'``. This mean that the
+context variable ``object_list`` will be renamed to ``hashtag_list``.
+
+**Template name**:
+
+If ``template_name`` isn't specified, this view will use the template
+``hashtags/hashtag_index.html`` by default.
+
+
+See the `official documentation for
+django.views.generic.list_detail.object_list
+<http://docs.djangoproject.com/en/1.1/ref/generic-views/#django-views-generic-list-detail-object-list>`_.
+
+
+hashtagged_item_list
+````````````````````
+A page representing a list of objects hastagged with ``hashtag``.
+
+Works like ``django.views.generic.list_detail.object_list`` with the
+peculiarities documented below.
+
+**Required arguments**:
+
+  * ``hashtag``: name of hashtag.
+
+**Optional arguments**:
+
+  * ``paginate_by``: An integer specifying how many objects should be displayed
+    per page. If this is given, the view will paginate objects with paginate_by
+    objects per page. The view will expect either a page query string parameter
+    (via GET) or a page variable specified in the URLconf.
+
+  * ``page``: The current page number, as an integer, or the string
+    'last'. This is 1-based.
+
+  * ``template_name``: The full name of a template to use in rendering the
+    page. This lets you override the default template name. By default, it's
+    ``hashtags/hashtagged_item_list.html``.
+
+  * ``template_object_name``: Designates the name of the template variable to
+    use in the template context. By default, this is
+    ``'hashtagged_item_list'``.
+
+  * ``extra_context``: A dictionary of values to add to the template
+    context. By default, this is an empty dictionary. If a value in the
+    dictionary is callable, the view will call it just before rendering the
+    template.
+
+  * ``allow_empty``: A boolean specifying whether to display the page if no
+    objects are available. If this is ``False`` and no objects are available,
+    the view will raise a 404 instead of displaying an empty page. By default,
+    this is ``True``.
+
+*Unlike the generic view ``object_list`` you don't provide a ``queryset`` but
+a hashtag name in the URL.*
+
+**Template name**:
+
+If ``template_name`` isn't specified, this view will use the template
+``hashtags/hashtagged_item_list.html`` by default.
+
+In addition to ``extra_context``, the template's context will be:
+
+  * ``hashtag``: The hashtag object in question.
+
+  * ``hashtagged_item_list``: The list of objects hashtagged with ``hastag``.
+
+  * ``is_paginated``: A boolean representing whether the results are
+    paginated. Specifically, this is set to ``False`` if the number of
+    available objects is less than or equal to ``paginate_by``.
+
+If the results are paginated, the context will contain these extra variables:
+
+  * ``paginator``: An instance of ``django.core.paginator.Paginator``.
+
+  * ``page_obj``: An instance of ``django.core.paginator.Page``.
+
+
 *Note: on directory "etc/sample_templates/" you have some template examples.*
+
 
 Template tags
 -------------
@@ -99,7 +187,7 @@ Arguments sent with this signal:
 sender
     The model class.
 instance
-    The actual instance being saved or updated.
+    The actual instance being saved.
 hashtagged_field_list
     String list of the model fields that has hashtags to be tracked.
     Default: None
