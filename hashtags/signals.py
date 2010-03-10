@@ -9,7 +9,7 @@
 # Software Foundation. See the file README for copying conditions.
 
 """
-Signals relating to hashtags
+Signals relating to hashtags.
 """
 
 from django.dispatch import Signal
