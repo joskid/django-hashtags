@@ -47,7 +47,7 @@ def urlize_hashtags(value):
 urlize_hashtags.is_safe = True
 urlize_hashtags = stringfilter(urlize_hashtags)
 
-def urlize_and_track_hashtags(value, object_to_track=None):
+def urlize_and_track_hashtags(value, object_to_track):
     """
     Works like ``urlize_hashtags`` but you can pass a object parameter to
     link/relate hashtags on text with the object in question.
