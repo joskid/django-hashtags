@@ -9,6 +9,8 @@
 # Software Foundation. See the file README for copying conditions.
 
 import re
+import simplejson
+import urllib
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db.utils import IntegrityError
@@ -44,6 +46,12 @@ def link_hashtags_to_model(text, object):
             HashtaggedItem(content_object=object, hashtag=hashtag).save()
         except IntegrityError:
             continue
+
+def search_twitter(values):
+    url = 'http://search.twitter.com/search.json'
+    values = urllib.urlencode(values)
+    response = urllib.urlopen(url, values)
+    return simplejson.load(response)
 
 def urlize_hashtags(text):
     """

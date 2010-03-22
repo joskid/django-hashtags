@@ -175,6 +175,24 @@ object has two fields with hashtags to be tracked. Use the signals below if you
 want this feature or if you want hashtags updated on ``post_save`` signal
 instead on template rendering.
 
+get_hashtagged_tweets
+`````````````````````
+
+Search for hashtagged tweets and populates the template context with a variable
+containing that result list, whose name is defined by the 'as' clause.
+
+Syntax::
+
+    {% get_hashtagged_tweets [num] [hashtag] as [var_name] %}
+
+Example usage::
+
+    {% get_hashtagged_tweets 10 #django as tweet_list %}
+
+Hashtag can be a ``hashtags.models.Hashtag`` too::
+
+    {% get_hashtagged_tweets 10 hashtag_obj as tweet_list %}
+
 
 Signals
 -------
