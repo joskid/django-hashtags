@@ -36,7 +36,7 @@ def urlize_hashtags(value):
 
     If value is "This is a #test.", the output will be "This is a
     <a href="[reversed url for hashtagged_item_list(request, hashtag='test')]">
-        #test</a>.".
+    #test</a>.".
 
     Note that if ``urlize_hashtags`` is applied to text that already contains
     HTML markup, things won't work as expected. Prefer apply this filter to
